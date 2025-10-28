@@ -5,9 +5,12 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
     const password = document.getElementById("password").value.trim();
     const errorMessage = document.getElementById("errorMessage");
   
-    if (username === "mikayla" && password === "sailboat") {
+    if (username === "Mikayla" && password === "sailboat") {
       window.location.href = "budget.html";
-    } else {
+    } else if (username === "Aiden" && password === "sailboat") {
+      window.location.href = "budget.html";
+    }
+    else {
       errorMessage.textContent = "Invalid credentials. Please try again.";
     }
 });
