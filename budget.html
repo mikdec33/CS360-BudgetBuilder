@@ -38,23 +38,20 @@
 
   <script>
     document.getElementById("budgetForm").addEventListener("submit", function (e) {
-      e.preventDefault();
+        e.preventDefault();
 
-      const adminName = document.getElementById("adminName").value;
-      const category = document.getElementById("budgetCategory").value;
-      const amount = document.getElementById("amount").value;
-      const justification = document.getElementById("justification").value;
+        const adminName = document.getElementById("adminName").value;
+        const category = document.getElementById("budgetCategory").value;
+        const amount = document.getElementById("amount").value;
+        const justification = document.getElementById("justification").value;
 
-      document.getElementById("confirmationMessage").innerHTML = `
-        <h3>Budget Submitted!</h3>
-        <p><strong>Administration:</strong> ${adminName}</p>
-        <p><strong>Category:</strong> ${category}</p>
-        <p><strong>Amount:</strong> $${parseFloat(amount).toFixed(2)}</p>
-        <p><strong>Justification:</strong> ${justification}</p>
-      `;
+        // Values -- > localStorage
+        localStorage.setItem("adminName", adminName);
+        localStorage.setItem("budgetCategory", category);
+        localStorage.setItem("amount", amount);
+        localStorage.setItem("justification", justification);
 
-      // Reset form for demo purposes
-      document.getElementById("budgetForm").reset();
+        window.location.href = "budgetTemplate.html";
     });
   </script>
 </body>
