@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Budget Wizard</title>
+  <style>
+    .wizard-page { display: none; }
+    .wizard-page.active { display: block; }
+    .nav-buttons { margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+  <!-- Page 1: Overview -->
+  <div class="wizard-page active" id="page0">
+    <h2>Budget Overview</h2>
+    <label>Title: <input type="text" id="budgetTitle"></label><br>
+    <label>Start Year: <input type="number" id="startYear"></label><br>
+    <label>End Year: <input type="number" id="endYear"></label><br>
+    <div class="nav-buttons">
+      <button id="nextBtn">Next</button>
+    </div>
+  </div>
+
+  <!-- Page 2: Personnel -->
+  <div class="wizard-page" id="page1">
+    <h2>Personnel Effort</h2>
+    <label>PI Effort %: <input type="number" id="piEffort"></label><br>
+    <label>Co-PI Effort %: <input type="number" id="coPiEffort"></label><br>
+    <div class="nav-buttons">
+      <button id="backBtn">Back</button>
+      <button id="nextBtn">Next</button>
+    </div>
+  </div>
+
+  <!-- Page 3: Student Support -->
+  <div class="wizard-page" id="page2">
+    <h2>Student Support</h2>
+    <label>Semester: <input type="text" id="semester"></label><br>
+    <label>Tuition Type: 
+      <select id="tuitionType">
+        <option value="in-state">In-State</option>
+        <option value="out-of-state">Out-of-State</option>
+      </select>
+    </label><br>
+    <label>FTE %: <input type="number" id="studentFTE"></label><br>
+    <div class="nav-buttons">
+      <button id="backBtn">Back</button>
+      <button id="nextBtn">Next</button>
+    </div>
+  </div>
+
+  <!-- Page 4: Travel -->
+  <div class="wizard-page" id="page3">
+    <h2>Travel</h2>
+    <label>Destination Type: 
+      <select id="destinationType">
+        <option value="domestic">Domestic</option>
+        <option value="international">International</option>
+      </select>
+    </label><br>
+    <label>Duration (days): <input type="number" id="durationDays"></label><br>
+    <div class="nav-buttons">
+      <button id="backBtn">Back</button>
+      <button id="nextBtn">Next</button>
+    </div>
+  </div>
+
+  <!-- Page 5: Review -->
+  <div class="wizard-page" id="page4">
+    <h2>Review & Export</h2>
+    <p>Here you’ll see a summary of all inputs.</p>
+    <div class="nav-buttons">
+      <button id="backBtn">Back</button>
+      <button id="submitBtn">Submit & Export</button>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
