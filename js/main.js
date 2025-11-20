@@ -51,7 +51,9 @@ document.addEventListener("click", function(e) {
   }
 });
 
-// Handle calculation request
+// =========================
+// BUDGET CALCULATION REQUEST
+// =========================
 document.getElementById("calcBtn")?.addEventListener("click", async () => {
   const staffId = document.getElementById("staffId").value;
   const effortPercent = document.getElementById("piEffort").value;
@@ -77,4 +79,38 @@ document.getElementById("calcBtn")?.addEventListener("click", async () => {
   }
 });
 
+// =========================
+// WIZARD SUBMISSION LOGIC
+// =========================
+document.getElementById("submitBtn")?.addEventListener("click", async () => {
+  const data = {
+    title: document.getElementById("budgetTitle")?.value,
+    startYear: document.getElementById("startYear")?.value,
+    endYear: document.getElementById("endYear")?.value,
+    piEffort: document.getElementById("piEffort")?.value,
+    coPiEffort: document.getElementById("coPiEffort")?.value,
+    semester: document.getElementById("semester")?.value,
+    tuitionType: document.getElementById("tuitionType")?.value,
+    studentFTE: document.getElementById("studentFTE")?.value,
+    destinationType: document.getElementById("destinationType")?.value,
+    durationDays: document.getElementById("durationDays")?.value,
+    subInstitution: document.getElementById("subInstitution")?.value,
+    subTotal: document.getElementById("subTotal")?.value,
+    subRate: document.getElementById("subRate")?.value
+  };
 
+  console.log("Collected Wizard Data:", data);
+
+  try {
+    const res = await fetch("/api/budget/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    const result = await res.json();
+    alert("Budget submitted successfully! ID: " + result.budgetId);
+  } catch (err) {
+    console.error("Error submitting budget:", err);
+    alert("Submission failed. Please try again.");
+  }
+});
