@@ -27,3 +27,10 @@ VALUES (1, 2025, '2025-01-01', '2025-12-31'),
 INSERT INTO subawards (budget_id, institution_name, subaward_total, subaward_f_and_a_rate)
 VALUES (1, 'University of Example', 250000, 50),
        (1, 'Research Institute XYZ', 150000, 45);
+
+-- Institutional Rates
+INSERT INTO institutional_rates (rate_type, rate_value, effective_date)
+VALUES
+  ('Fringe', 30.00, '2025-01-01'),   -- 30% fringe benefits
+  ('F&A', 55.00, '2025-01-01');      -- 55% indirect cost rate
+

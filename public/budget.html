@@ -126,23 +126,52 @@
       document.getElementById("fteWarning").style.display = fte > 50 ? "block" : "none";
     });
 
-    // Submit handler: save to localStorage + redirect
-    document.getElementById("submitBtn")?.addEventListener("click", () => {
+    document.getElementById("submitBtn")?.addEventListener("click", async () => {
       const fte = parseInt(document.getElementById("fte").value);
       if (fte > 50) {
         alert("Student FTE cannot exceed 50%");
         return;
       }
 
-      // Save values to localStorage
-      localStorage.setItem("adminName", document.getElementById("adminName").value);
-      localStorage.setItem("budgetCategory", document.getElementById("budgetCategory").value);
-      localStorage.setItem("amount", document.getElementById("amount").value);
-      localStorage.setItem("justification", document.getElementById("justification").value);
+      const formValues = {
+        adminName: document.getElementById("adminName").value,
+        budgetCategory: document.getElementById("budgetCategory").value,
+        amount: document.getElementById("amount").value,
+        justification: document.getElementById("justification").value,
+        semester: document.getElementById("semester")?.value,
+        tuitionType: document.getElementById("tuitionType")?.value,
+        fte: document.getElementById("fte")?.value,
+        destinationType: document.getElementById("destinationType")?.value,
+        durationDays: document.getElementById("durationDays")?.value,
+        subInstitution: document.getElementById("subInstitution")?.value,
+        subTotal: document.getElementById("subTotal")?.value,
+        subRate: document.getElementById("subRate")?.value
+    };
 
-      // Redirect to budgetTemplate.html
-      window.location.href = "budgetTemplate.html";
+  const payload = {
+    ...formValues,
+    userId: localStorage.getItem("userId")
+  };
+
+  try {
+    const res = await fetch("/api/budget/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     });
+    const result = await res.json();
+    if (result.success) {
+      alert("Budget submitted successfully! ID: " + result.budgetId);
+      window.location.href = "dashboard.html";
+    } else {
+      alert("Submission failed. Please try again.");
+    }
+  } catch (err) {
+    console.error("Error submitting budget:", err);
+    alert("Submission failed. Please try again.");
+  }
+});
+
   </script>
 </body>
 </html>

@@ -1,0 +1,50 @@
+<script>
+    async function loadBudgets(userId) {
+      try {
+        const res = await fetch("/api/budget/list", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId })
+        });
+        const data = await res.json();
+    
+        if (data.success) {
+          const listDiv = document.getElementById("budgetList");
+          listDiv.innerHTML = "";
+          data.budgets.forEach(b => {
+            // Quick display using overview endpoint
+            const item = document.createElement("div");
+            item.className = "budget-item";
+            item.innerHTML = `
+              <h3>${b.title} (${b.start_year}–${b.end_year})</h3>
+              <button onclick="editBudget(${b.budget_id})">Edit</button>
+            `;
+            listDiv.appendChild(item);
+          });
+        }
+      } catch (err) {
+        console.error("Error loading budgets:", err);
+      }
+    }
+    
+    function editBudget(budgetId) {
+      // Redirect to wizard with budgetId
+      window.location.href = `budget.html?budgetId=${budgetId}`;
+    }
+    
+    document.getElementById("newBudgetBtn").addEventListener("click", () => {
+      window.location.href = "budget.html"; // start fresh
+    });
+    
+    document.addEventListener("DOMContentLoaded", () => {
+        const userId = localStorage.getItem("userId");   // <-- get the real logged-in userId
+        if (userId) {
+            loadBudgets(userId);
+        } else {
+            console.warn("No userId found in localStorage. Redirecting to login.");
+            window.location.href = "login.html";
+        }
+    });
+
+    </script>
+    
