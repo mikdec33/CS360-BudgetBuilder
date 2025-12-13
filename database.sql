@@ -1,7 +1,3 @@
--- ============================================================
--- Guided Research Budget Builder (WORKING MATCHED SCHEMA)
--- Import this file into phpMyAdmin (budgetbuilder database)
--- ============================================================
 DROP DATABASE IF EXISTS budgetbuilder;
 CREATE DATABASE budgetbuilder;
 USE budgetbuilder;
@@ -23,7 +19,6 @@ DROP TABLE IF EXISTS users;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
--- Users
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(50) NOT NULL UNIQUE,
@@ -35,7 +30,6 @@ CREATE TABLE users (
 INSERT INTO users (username, email, password, role) VALUES
 ('admin', 'admin@example.com', 'admin123', 'admin');
 
--- Faculty & Staff
 CREATE TABLE faculty_staff (
   id INT AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(50) NOT NULL,
@@ -50,7 +44,6 @@ INSERT INTO faculty_staff (first_name, last_name, title, base_salary) VALUES
 ('Jamie', 'CoPI', 'Associate Professor', 95000),
 ('Morgan', 'Researcher', 'Assistant Professor', 85000);
 
--- Students
 CREATE TABLE students (
   id INT AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(50) NOT NULL,
@@ -64,7 +57,6 @@ INSERT INTO students (first_name, last_name, level, department) VALUES
 ('Riley', 'MS', 'MS', 'Mechanical Engineering'),
 ('Jordan', 'Assistant', 'PhD', 'Civil Engineering');
 
--- Travel Profiles
 CREATE TABLE travel_profiles (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
@@ -78,7 +70,6 @@ INSERT INTO travel_profiles (name, type, per_diem, airfare_estimate, lodging_cap
 ('Domestic conference (3 days)', 'Domestic', 60, 600, 150),
 ('International workshop (5 days)', 'International', 90, 1400, 220);
 
--- Tuition & Fees
 CREATE TABLE tuition_fees (
   id INT AUTO_INCREMENT PRIMARY KEY,
   semester ENUM('Fall','Spring','Summer') NOT NULL,
@@ -95,7 +86,6 @@ INSERT INTO tuition_fees VALUES
 (NULL,'Spring','in-state',6000,800,3.0,2025),
 (NULL,'Spring','out-of-state',14000,800,3.0,2025);
 
--- Fringe Rates
 CREATE TABLE fringe_rates (
   id INT AUTO_INCREMENT PRIMARY KEY,
   category ENUM('Faculty','Staff','Student','Temp') NOT NULL,
@@ -109,7 +99,6 @@ INSERT INTO fringe_rates (category, rate_percent, effective_date) VALUES
 ('Student', 2.5, '2024-07-01'),
 ('Temp', 8.3, '2024-07-01');
 
--- F&A Rates
 CREATE TABLE fa_rates (
   id INT AUTO_INCREMENT PRIMARY KEY,
   label VARCHAR(100) NOT NULL,
@@ -121,7 +110,6 @@ CREATE TABLE fa_rates (
 INSERT INTO fa_rates (label, rate_percent, base_type, effective_date) VALUES
 ('On-campus research (MTDC)', 54.5, 'MTDC', '2024-07-01');
 
--- Budgets
 CREATE TABLE budgets (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
@@ -137,7 +125,6 @@ CREATE TABLE budgets (
   FOREIGN KEY (created_by) REFERENCES users(id)
 );
 
--- Budget Personnel (HOURS-BASED)
 CREATE TABLE budget_personnel (
   id INT AUTO_INCREMENT PRIMARY KEY,
   budget_id INT NOT NULL,
@@ -151,7 +138,6 @@ CREATE TABLE budget_personnel (
   FOREIGN KEY (faculty_id) REFERENCES faculty_staff(id)
 );
 
--- Budget Students (Tuition)
 CREATE TABLE budget_students (
   id INT AUTO_INCREMENT PRIMARY KEY,
   budget_id INT NOT NULL,
@@ -166,7 +152,6 @@ CREATE TABLE budget_students (
   FOREIGN KEY (student_id) REFERENCES students(id)
 );
 
--- Budget Travel
 CREATE TABLE budget_travel (
   id INT AUTO_INCREMENT PRIMARY KEY,
   budget_id INT NOT NULL,
@@ -180,7 +165,6 @@ CREATE TABLE budget_travel (
   FOREIGN KEY (travel_profile_id) REFERENCES travel_profiles(id)
 );
 
--- Subawards
 CREATE TABLE subawards (
   id INT AUTO_INCREMENT PRIMARY KEY,
   budget_id INT NOT NULL,
@@ -192,6 +176,4 @@ CREATE TABLE subawards (
   FOREIGN KEY (budget_id) REFERENCES budgets(id)
 );
 
--- ============================================================
--- End
--- ============================================================
+

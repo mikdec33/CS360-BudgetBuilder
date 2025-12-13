@@ -1,7 +1,6 @@
 <?php
 require_once 'functions.php';
 
-// If already logged in, redirect home
 if (!empty($_SESSION['user_id'])) {
     header("Location: index.php");
     exit;
@@ -21,13 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($password !== $confirm) $errors[] = "Passwords do not match.";
 
     if (!$errors) {
-        // Check uniqueness
         $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
         $stmt->execute([$username, $email]);
         if ($stmt->fetch()) {
             $errors[] = "Username or email already exists.";
         } else {
-            // Create normal user (role = user)
             $stmt = $pdo->prepare("INSERT INTO users (username, email, password, role)
                                    VALUES (?, ?, ?, 'user')");
             $stmt->execute([$username, $email, $password]);

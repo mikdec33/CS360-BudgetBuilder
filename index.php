@@ -13,8 +13,8 @@ include 'partials/header.php';
       </div>
       <div class="card-body p-4">
         <p class="mb-4">
-          BudgetBuilder walks users through a structured budget wizard. It pulls
-          institutional rates, tuition schedules, and travel profiles from a central database and generates
+          BudgetBuilder walks users through the budget building process. It pulls
+          institutional rates, tuition schedules, and travel profiles from a database and generates
           an Excel file for submission.
         </p>
         <?php if (empty($_SESSION['user_id'])): ?>

@@ -1,8 +1,4 @@
 <?php
-/**
- * export.php
- * Exports a budget into the official UI AY24-25 SF424 Excel template
- */
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/functions.php';
 require_login();

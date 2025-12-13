@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare("SELECT id, username, email, password, role FROM users WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch();
-    if ($user && $password === $user['password']) { // simple plain-text check for lab
+    if ($user && $password === $user['password']) { 
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['email'] = $user['email'];

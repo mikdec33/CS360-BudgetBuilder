@@ -19,72 +19,67 @@ $faculty = $pdo->query("SELECT id, first_name, last_name, base_salary FROM facul
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Add personnel row (repeatable)
-    if (isset($_POST['add_personnel'])) {
+  if (isset($_POST['add_personnel'])) {
 
-        $faculty_id = (int)($_POST['faculty_id'] ?? 0);
-        $external_name = trim($_POST['external_name'] ?? '');
-        $category = $_POST['category'] ?? 'Faculty';
+    $faculty_id = (int)($_POST['faculty_id'] ?? 0);
+    $external_name = trim($_POST['external_name'] ?? '');
+    $category = $_POST['category'] ?? 'Faculty';
 
-        // Hourly rate: user can override; default from base_salary/2080 if faculty selected
-        $hourly_rate = (float)($_POST['hourly_rate'] ?? 0);
-        if ($hourly_rate <= 0 && $faculty_id > 0) {
-            foreach ($faculty as $f) {
-                if ((int)$f['id'] === $faculty_id) {
-                    $hourly_rate = round(((float)$f['base_salary']) / 2080.0, 2);
-                    break;
-                }
+    $hourly_rate = (float)($_POST['hourly_rate'] ?? 0);
+    if ($hourly_rate <= 0 && $faculty_id > 0) {
+        foreach ($faculty as $f) {
+            if ((int)$f['id'] === $faculty_id) {
+                $hourly_rate = round(((float)$f['base_salary']) / 2080.0, 2);
+                break;
             }
-        }
-
-        $hours = [];
-        $hours_in = $_POST['hours'] ?? [];
-        if (is_array($hours_in)) {
-            foreach ($hours_in as $y => $hrs) {
-                $y = (int)$y;
-                if ($y < 1 || $y > 5) continue;
-                $hours[$y] = max(0, (float)$hrs);
-            }
-        }
-
-        // Determine display name
-        $name = $external_name;
-        if ($name === '' && $faculty_id > 0) {
-            foreach ($faculty as $f) {
-                if ((int)$f['id'] === $faculty_id) {
-                    $name = $f['first_name'] . ' ' . $f['last_name'];
-                    break;
-                }
-            }
-        }
-        if ($name === '') $name = 'Personnel';
-
-        $_SESSION['personnel'][] = [
-            'faculty_id' => $faculty_id ?: null,
-            'external_name' => $name,
-            'category' => $category,
-            'hourly_rate' => $hourly_rate,
-            'hours' => $hours
-        ];
-    }
-
-    // Remove action
-    if (isset($_POST['remove_idx'])) {
-        $idx = (int)$_POST['remove_idx'];
-        if (isset($_SESSION['personnel'][$idx])) {
-            array_splice($_SESSION['personnel'], $idx, 1);
         }
     }
 
-    // Continue to next step
-    if (isset($_POST['continue'])) {
-        if (empty($_SESSION['personnel'])) {
-            $error = "Add at least one personnel entry before continuing.";
-        } else {
-            header('Location: wizard_students.php');
-            exit;
+    $hours = [];
+    $hours_in = $_POST['hours'] ?? [];
+    if (is_array($hours_in)) {
+        foreach ($hours_in as $y => $hrs) {
+            $y = (int)$y;
+            if ($y < 1 || $y > 5) continue;
+            $hours[$y] = max(0, (float)$hrs);
         }
     }
+
+    $name = $external_name;
+    if ($name === '' && $faculty_id > 0) {
+        foreach ($faculty as $f) {
+            if ((int)$f['id'] === $faculty_id) {
+                $name = $f['first_name'] . ' ' . $f['last_name'];
+                break;
+            }
+        }
+    }
+    if ($name === '') $name = 'Personnel';
+
+    $_SESSION['personnel'][] = [
+        'faculty_id' => $faculty_id ?: null,
+        'external_name' => $name,
+        'category' => $category,
+        'hourly_rate' => $hourly_rate,
+        'hours' => $hours
+    ];
+  }
+
+  if (isset($_POST['remove_idx'])) {
+      $idx = (int)$_POST['remove_idx'];
+      if (isset($_SESSION['personnel'][$idx])) {
+          array_splice($_SESSION['personnel'], $idx, 1);
+      }
+  }
+
+  if (isset($_POST['continue'])) {
+      if (empty($_SESSION['personnel'])) {
+          $error = "Add at least one personnel entry before continuing.";
+      } else {
+          header('Location: wizard_students.php');
+          exit;
+      }
+  }
 }
 
 include 'partials/header.php';
